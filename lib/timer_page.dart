@@ -11,10 +11,7 @@ class _TimerPageState extends State<TimerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF2D2F41),
-      appBar: AppBar(
-        title: Text('Timer Page'),
-      ),
+      backgroundColor: Colors.white,
     );
   }
 }

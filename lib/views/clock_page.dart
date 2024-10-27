@@ -55,14 +55,13 @@ class _ClockPageState extends State<ClockPage> {
           Expanded(
             child: Container(
               alignment: Alignment.center,
-              color: const Color(0xFF2D2F41),
+              color: Colors.white,
               child: Column(
                 children: [
                   SizedBox(height: screenHeight * 0.08),
                   Text(
                     'Clock',
                     style: TextStyle(
-                      color: Colors.white,
                       fontSize: screenWidth * 0.08,
                       fontWeight: FontWeight.bold,
                     ),
@@ -71,7 +70,6 @@ class _ClockPageState extends State<ClockPage> {
                   Text(
                     formattedTime,
                     style: TextStyle(
-                      color: Colors.white,
                       fontSize: screenWidth * 0.12,
                       fontWeight: FontWeight.bold,
                     ),
@@ -79,7 +77,6 @@ class _ClockPageState extends State<ClockPage> {
                   Text(
                     formattedDate,
                     style: TextStyle(
-                      color: Colors.white,
                       fontSize: screenWidth * 0.06,
                     ),
                   ),
