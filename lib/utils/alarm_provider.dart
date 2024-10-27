@@ -182,6 +182,14 @@ class AlarmProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> removeAlarm(int index) async {
+    if (index >= 0 && index < alarmList.length) {
+      alarmList.removeAt(index); // Remove the alarm from the list
+      await setData(); // Update SharedPreferences
+      notifyListeners(); // Notify listeners to update the UI
+    }
+  }
+
   // Future<void> getData() async {
   //   List<String>? comingList = preferences.getStringList("data");
   //   if (comingList != null) {

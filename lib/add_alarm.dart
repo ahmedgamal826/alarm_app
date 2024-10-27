@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:alarm_app/utils/alarm_provider.dart';
+import 'package:alarm_app/widgets/show_snack_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -52,6 +53,11 @@ class _AddAlaramState extends State<AddAlarm> {
                     .scheduleNotification(notificationtime!, randomNumber);
 
                 Navigator.pop(context);
+
+                customShowSnackBar(
+                  content: 'Alarm Added',
+                  context: context,
+                );
               },
               icon: const Icon(
                 Icons.check,
@@ -135,6 +141,10 @@ class _AddAlaramState extends State<AddAlarm> {
                     .scheduleNotification(notificationtime!, randomNumber);
 
                 Navigator.pop(context);
+                customShowSnackBar(
+                  content: 'Alarm Added',
+                  context: context,
+                );
               },
               child: const Text("Set Alaram")),
         ],

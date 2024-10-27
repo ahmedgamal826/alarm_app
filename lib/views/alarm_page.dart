@@ -1,160 +1,194 @@
 import 'dart:async';
-
 import 'package:alarm_app/add_alarm.dart';
 import 'package:alarm_app/utils/alarm_provider.dart';
+import 'package:alarm_app/widgets/show_snack_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class AlarmPage extends StatefulWidget {
-  const AlarmPage({super.key});
-
   @override
-  State<AlarmPage> createState() => _AlarmPageState();
+  _AlarmPageState createState() => _AlarmPageState();
 }
 
 class _AlarmPageState extends State<AlarmPage> {
   @override
   void initState() {
-    context.read<AlarmProvider>().initialize(context);
-    Timer.periodic(const Duration(seconds: 1), (timer) {
-      setState(() {});
-    });
-
     super.initState();
     context.read<AlarmProvider>().getData();
+
+    // Update every second (optional)
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {});
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFEEEFF5),
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.deepPurpleAccent,
-        actions: const [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Icon(
-              Icons.menu,
-              color: Colors.white,
-            ),
-          )
-        ],
-        title: const Text(
-          'Alarm Clock ',
-          style: TextStyle(color: Colors.white),
-        ),
+        backgroundColor: Colors.white,
         centerTitle: true,
+        title: const Text(
+          'Alarm',
+          style: TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
       body: ListView(
         children: [
-          Container(
-            decoration: const BoxDecoration(
-                color: Colors.deepPurpleAccent,
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(30),
-                    bottomRight: Radius.circular(30))),
-            height: MediaQuery.of(context).size.height * 0.1,
-            child: Center(
-                child: Text(
-              DateFormat.yMEd().add_jms().format(
-                    DateTime.now(),
-                  ),
-              style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                  color: Colors.white),
-            )),
-          ),
-          Consumer<AlarmProvider>(builder: (context, alarm, child) {
-            return Container(
-              height: MediaQuery.of(context).size.height * 0.7,
-              child: ListView.builder(
+          Consumer<AlarmProvider>(
+            builder: (context, alarm, child) {
+              return Container(
+                height: MediaQuery.of(context).size.height * 0.7,
+                child: ListView.builder(
                   itemCount: alarm.alarmList.length,
-                  itemBuilder: (BuildContext, index) {
-                    return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          height: MediaQuery.of(context).size.height * 0.1,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.white,
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
+                  itemBuilder: (BuildContext context, index) {
+                    return Dismissible(
+                      key: Key(alarm.alarmList[index].id.toString()),
+                      background: Container(
+                        color: Colors.red,
+                        alignment: Alignment.centerLeft,
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: const Icon(Icons.delete, color: Colors.white),
+                      ),
+                      confirmDismiss: (direction) async {
+                        // Show confirmation dialog before deleting
+                        return await showDialog<bool>(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text(
+                                'Confirm Deletion',
+                                style: TextStyle(
+                                  fontSize: 27,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              content: const Text(
+                                'Are you sure you want to delete this alarm?',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              actions: <Widget>[
                                 Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          alarm.alarmList[index].dateTime!,
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 16,
-                                              color: Colors.black),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.black,
+                                      ),
+                                      child: const Text(
+                                        'Cancel',
+                                        style: TextStyle(
+                                          fontSize: 23,
+                                          color: Colors.white,
                                         ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 8.0),
-                                          child: Text("|" +
-                                              alarm.alarmList[index].label
-                                                  .toString()),
-                                        ),
-                                      ],
+                                      ),
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(false),
                                     ),
-                                    CupertinoSwitch(
-                                        value: (alarm.alarmList[index]
-                                                    .milliseconds! <
-                                                DateTime.now()
-                                                    .microsecondsSinceEpoch)
-                                            ? false
-                                            : alarm.alarmList[index].check,
-                                        onChanged: (v) {
-                                          alarm.editSwitch(index, v);
-
-                                          alarm.cancelNotification(
-                                              alarm.alarmList[index].id!);
-                                        }),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.black,
+                                      ),
+                                      child: const Text(
+                                        'Delete',
+                                        style: TextStyle(
+                                          fontSize: 23,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(true),
+                                    ),
                                   ],
+                                )
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      onDismissed: (direction) {
+                        // Remove the alarm from the list
+                        alarm.removeAlarm(index);
+                        customShowSnackBar(
+                            content: 'Alarm Deleted', context: context);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 4.0, horizontal: 8.0),
+                        child: Card(
+                          color: Colors.black.withOpacity(0.01),
+                          // Optional: Use Card for elevation
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: ListTile(
+                            contentPadding: const EdgeInsets.all(16.0),
+                            title: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  alarm.alarmList[index].dateTime!,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                  ),
                                 ),
-                                Text(alarm.alarmList[index].when!)
+                                CupertinoSwitch(
+                                  value: (alarm.alarmList[index].milliseconds! <
+                                          DateTime.now().microsecondsSinceEpoch)
+                                      ? false
+                                      : alarm.alarmList[index].check,
+                                  onChanged: (v) {
+                                    alarm.editSwitch(index, v);
+                                    alarm.cancelNotification(
+                                        alarm.alarmList[index].id!);
+                                  },
+                                ),
                               ],
                             ),
+                            subtitle: Text(
+                              alarm.alarmList[index].when!,
+                              style: const TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
                           ),
-                        ));
-                  }),
-            );
-          }),
-          Container(
-            height: MediaQuery.of(context).size.height * 0.1,
-            decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30)),
-                color: Colors.deepPurpleAccent),
-            child: Center(
-                child: GestureDetector(
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => AddAlarm()));
-              },
-              child: Container(
-                  decoration: const BoxDecoration(
-                      color: Colors.white, shape: BoxShape.circle),
-                  child: const Padding(
-                    padding: EdgeInsets.all(12.0),
-                    child: Icon(Icons.add),
-                  )),
-            )),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.black,
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AddAlarm(),
+            ),
+          );
+        },
+        child: const Icon(
+          Icons.add,
+          size: 35,
+          color: Colors.white,
+        ),
       ),
     );
   }
