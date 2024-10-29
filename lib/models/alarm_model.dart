@@ -1,6 +1,7 @@
 class AlarmModel {
   String? label;
   String? dateTime;
+  String? alarmDate;
   bool check;
   String? when;
   int? id;
@@ -9,6 +10,7 @@ class AlarmModel {
   AlarmModel({
     required this.label,
     required this.dateTime,
+    required this.alarmDate,
     required this.check,
     required this.when,
     required this.id,
@@ -18,6 +20,7 @@ class AlarmModel {
   factory AlarmModel.fromJson(Map<String, dynamic> json) => AlarmModel(
         label: json["label"],
         dateTime: json["dateTime"],
+        alarmDate: json["alarmDate"],
         check: json["check"],
         when: json["when"],
         id: json["id"],
@@ -27,6 +30,7 @@ class AlarmModel {
   Map<String, dynamic> toJson() => {
         "label": label,
         "dateTime": dateTime,
+        "alarmDate": alarmDate,
         "check": check,
         "when": when,
         "id": id,

@@ -1,7 +1,7 @@
 import 'package:alarm_app/views/alarm_page.dart';
 import 'package:alarm_app/views/clock_page.dart';
 import 'package:alarm_app/views/stopwatch_page.dart';
-import 'package:alarm_app/timer_page.dart';
+import 'package:alarm_app/views/timer_page.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +16,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = [
     const ClockPage(),
     AlarmPage(),
-    const TimerPage(),
+    TimerScreen(),
     const StopWatchPage(),
   ];
 

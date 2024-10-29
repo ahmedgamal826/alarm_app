@@ -136,32 +136,75 @@ class _AlarmPageState extends State<AlarmPage> {
                             title: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  alarm.alarmList[index].dateTime!,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                    color: Colors.black,
-                                  ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      alarm.alarmList[index].alarmDate!,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    Text(
+                                      alarm.alarmList[index].dateTime!,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ],
                                 ),
+                                // CupertinoSwitch(
+                                //   value: (alarm.alarmList[index].milliseconds! <
+                                //           DateTime.now().microsecondsSinceEpoch)
+                                //       ? false
+                                //       : alarm.alarmList[index].check,
+                                //   onChanged: (v) {
+                                //     alarm.editSwitch(index, v);
+                                //     alarm.cancelNotification(
+                                //         alarm.alarmList[index].id!);
+                                //   },
+                                // ),
+
                                 CupertinoSwitch(
                                   value: (alarm.alarmList[index].milliseconds! <
-                                          DateTime.now().microsecondsSinceEpoch)
+                                          DateTime.now().millisecondsSinceEpoch)
                                       ? false
                                       : alarm.alarmList[index].check,
                                   onChanged: (v) {
                                     alarm.editSwitch(index, v);
-                                    alarm.cancelNotification(
-                                        alarm.alarmList[index].id!);
+                                    // يمكنك إلغاء الإشعار هنا إذا كان المستخدم يغير المفتاح إلى إيقاف
+                                    if (!v) {
+                                      alarm.cancelNotification(
+                                          alarm.alarmList[index].id!);
+                                    }
                                   },
                                 ),
                               ],
                             ),
-                            subtitle: Text(
-                              alarm.alarmList[index].when!,
-                              style: const TextStyle(
-                                fontSize: 16,
-                              ),
+                            subtitle: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  alarm.alarmList[index].when!,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                Flexible(
+                                  child: Text(
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    ' | ${alarm.alarmList[index].label!}',
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
