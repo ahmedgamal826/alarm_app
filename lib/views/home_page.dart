@@ -17,7 +17,7 @@ class _HomePageState extends State<HomePage> {
     const ClockPage(),
     AlarmPage(),
     TimerScreen(),
-    const StopWatchPage(),
+    StopwatchScreen(),
   ];
 
   @override
