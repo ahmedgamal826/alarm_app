@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 void customShowSnackBar({
   required BuildContext context,
   required String content,
+  required Color backgroundColor,
 }) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
@@ -17,7 +18,7 @@ void customShowSnackBar({
           ),
         ),
       ),
-      backgroundColor: Colors.blue,
+      backgroundColor: backgroundColor,
       duration: const Duration(seconds: 2),
       behavior: SnackBarBehavior.floating,
       margin: const EdgeInsets.all(20),

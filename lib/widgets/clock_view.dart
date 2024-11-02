@@ -5,8 +5,9 @@ import 'package:alarm_app/widgets/clock_painter.dart';
 import 'package:flutter/material.dart';
 
 class ClockView extends StatefulWidget {
+  ClockView({Key? key, required this.size, required this.isDarkMode});
   final double size;
-  const ClockView({Key? key, required this.size});
+  late bool isDarkMode;
 
   @override
   State<ClockView> createState() => _ClockViewState();
@@ -29,7 +30,7 @@ class _ClockViewState extends State<ClockView> {
       child: Transform.rotate(
         angle: -pi / 2,
         child: CustomPaint(
-          painter: ClockPainter(),
+          painter: ClockPainter(isDarkMode: widget.isDarkMode),
         ),
       ),
     );

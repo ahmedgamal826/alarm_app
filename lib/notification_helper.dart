@@ -157,6 +157,59 @@
 //   }
 // }
 
+// import 'package:timezone/data/latest_all.dart' as tz;
+// import 'package:timezone/timezone.dart' as tz;
+// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+// class NotificationHelper {
+//   static final FlutterLocalNotificationsPlugin notification =
+//       FlutterLocalNotificationsPlugin();
+
+//   static init() {
+//     notification.initialize(
+//       InitializationSettings(
+//         android: AndroidInitializationSettings(
+//           String.fromEnvironment(
+//             '@mipmap/ic_launcher',
+//           ),
+//         ),
+//         iOS: DarwinInitializationSettings(),
+//       ),
+//     );
+
+//     tz.initializeTimeZones();
+//   }
+
+//   static schudleNotification(String body, String title) {
+//     var androidDetails = AndroidNotificationDetails(
+//       'important_notification',
+//       'My Channel',
+//       importance: Importance.max,
+//       priority: Priority.high,
+//     );
+
+//     var iosDetails = const DarwinNotificationDetails();
+
+//     var notificationDetails = NotificationDetails(
+//       android: androidDetails,
+//       iOS: iosDetails,
+//     );
+
+//     notification.zonedSchedule(
+//       0,
+//       title,
+//       body,
+//       tz.TZDateTime.now(tz.local).add(
+//         const Duration(seconds: 10),
+//       ),
+//       notificationDetails,
+//       uiLocalNotificationDateInterpretation:
+//           UILocalNotificationDateInterpretation.absoluteTime,
+//       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+//     );
+//   }
+// }
+
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -169,10 +222,7 @@ class NotificationHelper {
     notification.initialize(
       InitializationSettings(
         android: AndroidInitializationSettings(
-          String.fromEnvironment(
-            '@mipmap/ic_launcher',
-          ),
-        ),
+            '@mipmap/ic_launcher'), // Use literal string for icon
         iOS: DarwinInitializationSettings(),
       ),
     );
@@ -180,7 +230,7 @@ class NotificationHelper {
     tz.initializeTimeZones();
   }
 
-  static schudleNotification(String body, String title) {
+  static scheduleNotification(String body, String title) {
     var androidDetails = AndroidNotificationDetails(
       'important_notification',
       'My Channel',
@@ -206,6 +256,8 @@ class NotificationHelper {
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      matchDateTimeComponents: DateTimeComponents
+          .time, // Optionally, ensure datetime components match
     );
   }
 }

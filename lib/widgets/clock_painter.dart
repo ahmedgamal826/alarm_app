@@ -3,7 +3,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 class ClockPainter extends CustomPainter {
+  ClockPainter({required this.isDarkMode});
   var dateTime = DateTime.now();
+
+  late bool isDarkMode;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -14,25 +17,26 @@ class ClockPainter extends CustomPainter {
 
     var fillBrush = Paint()..color = Colors.black38;
     var outerBrush = Paint()
-      ..color = Colors.black12
+      ..color = isDarkMode ? Colors.white : Colors.black12
       ..style = PaintingStyle.stroke
       ..strokeWidth = size.width / 20;
 
     var dashBrush = Paint()
-      ..color = Colors.black
+      ..color = isDarkMode ? Colors.white : Colors.black
       ..style = PaintingStyle.stroke
       ..strokeWidth = 3;
 
-    var centerFillBrush = Paint()..color = Colors.white;
+    var centerFillBrush = Paint()
+      ..color = isDarkMode ? Colors.white : Colors.white;
 
     var secondHandBrush = Paint()
-      ..color = Colors.white
+      ..color = Colors.blue
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round
       ..strokeWidth = size.width / 60;
 
     var minuteHandBrush = Paint()
-      ..color = Colors.black
+      ..color = isDarkMode ? Colors.white : Colors.black
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round
       ..strokeWidth = size.width / 30;

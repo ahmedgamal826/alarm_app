@@ -3,13 +3,16 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 class StopwatchScreen extends StatefulWidget {
+  StopwatchScreen({required this.isDarkMode});
+  late bool isDarkMode;
+
   @override
   _StopwatchScreenState createState() => _StopwatchScreenState();
 }
 
 class _StopwatchScreenState extends State<StopwatchScreen> {
   late Stopwatch _stopwatch;
-  late Timer _timer;
+  Timer? _timer;
 
   String _formattedTime = "00:00:00";
 
@@ -19,11 +22,11 @@ class _StopwatchScreenState extends State<StopwatchScreen> {
     _stopwatch = Stopwatch();
   }
 
-  @override
-  void dispose() {
-    _timer.cancel();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _timer!.cancel();
+  //   super.dispose();
+  // }
 
   void _startStopwatch() {
     if (!_stopwatch.isRunning) {
@@ -31,7 +34,7 @@ class _StopwatchScreenState extends State<StopwatchScreen> {
       _timer = Timer.periodic(Duration(seconds: 1), _updateTime);
     } else {
       _stopwatch.stop();
-      _timer.cancel();
+      _timer!.cancel();
     }
   }
 
@@ -57,14 +60,15 @@ class _StopwatchScreenState extends State<StopwatchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: widget.isDarkMode ? Colors.black : Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: const Text(
+        backgroundColor: widget.isDarkMode ? Colors.black : Colors.white,
+        title: Text(
           'Stopwatch',
           style: TextStyle(
             fontSize: 30,
             fontWeight: FontWeight.bold,
+            color: widget.isDarkMode ? Colors.white : Colors.black,
           ),
         ),
         centerTitle: true,
@@ -75,13 +79,21 @@ class _StopwatchScreenState extends State<StopwatchScreen> {
           children: [
             Text(
               _formattedTime,
-              style: const TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 50,
+                fontWeight: FontWeight.bold,
+                color: widget.isDarkMode ? Colors.white : Colors.black,
+              ),
             ),
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor:
+                        widget.isDarkMode ? Colors.white : Colors.black,
+                  ),
                   onPressed: _startStopwatch,
                   child: Text(
                     _stopwatch.isRunning ? 'Stop' : 'Start',
@@ -93,6 +105,10 @@ class _StopwatchScreenState extends State<StopwatchScreen> {
                 ),
                 const SizedBox(width: 20),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor:
+                        widget.isDarkMode ? Colors.white : Colors.black,
+                  ),
                   onPressed: _resetStopwatch,
                   child: const Text(
                     'Reset',

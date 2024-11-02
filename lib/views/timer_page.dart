@@ -279,12 +279,16 @@ import 'package:alarm_app/notification_helper.dart';
 import 'package:flutter/material.dart';
 
 class TimerScreen extends StatefulWidget {
+  TimerScreen({required this.isDarkMode});
+
+  late bool isDarkMode;
+
   @override
   _TimerScreenState createState() => _TimerScreenState();
 }
 
 class _TimerScreenState extends State<TimerScreen> {
-  late Timer _timer;
+  Timer? _timer;
   int _start = 0; // الزمن المتبقي بالثواني
   bool _isRunning = false;
 
@@ -299,17 +303,17 @@ class _TimerScreenState extends State<TimerScreen> {
     NotificationHelper.init(); // تهيئة إشعارات
   }
 
-  @override
-  void dispose() {
-    _timer.cancel();
-    _hoursController.dispose();
-    _minutesController.dispose();
-    _secondsController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _timer!.cancel();
+  //   _hoursController.dispose();
+  //   _minutesController.dispose();
+  //   _secondsController.dispose();
+  //   super.dispose();
+  // }
 
   void startTimer() {
-    if (_isRunning) return; // تجنب بدء المؤقت مرة أخرى إذا كان قيد التشغيل
+    if (_isRunning) return;
     _isRunning = true;
 
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
@@ -318,26 +322,26 @@ class _TimerScreenState extends State<TimerScreen> {
           _start--;
         });
       } else {
-        _timer.cancel();
-        _isRunning = false;
-        // إرسال إشعار عند انتهاء الوقت
-        NotificationHelper.schudleNotification(
-          'Timer has ended!',
-          'Time is up!',
-        );
+        // _timer.cancel();
+        // _isRunning = false;
+        // // إرسال إشعار عند انتهاء الوقت
+        // NotificationHelper.s(
+        //   'Timer has ended!',
+        //   'Time is up!',
+        // );
       }
     });
   }
 
   void stopTimer() {
-    _timer.cancel();
+    _timer!.cancel();
     _isRunning = false;
   }
 
   void resetTimer() {
     stopTimer();
     setState(() {
-      _start = 0; // إعادة تعيين الزمن
+      _start = 0;
     });
   }
 
@@ -362,13 +366,16 @@ class _TimerScreenState extends State<TimerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: widget.isDarkMode ? Colors.black : Colors.white,
       appBar: AppBar(
+        backgroundColor: widget.isDarkMode ? Colors.black : Colors.white,
         centerTitle: true,
         title: Text(
           'Timer',
           style: TextStyle(
             fontSize: 30,
             fontWeight: FontWeight.bold,
+            color: widget.isDarkMode ? Colors.white : Colors.black,
           ),
         ),
       ),
@@ -378,7 +385,11 @@ class _TimerScreenState extends State<TimerScreen> {
           children: [
             Text(
               formatTime(_start),
-              style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 48,
+                fontWeight: FontWeight.bold,
+                color: widget.isDarkMode ? Colors.white : Colors.black,
+              ),
             ),
             SizedBox(height: 20),
             Row(
@@ -390,7 +401,12 @@ class _TimerScreenState extends State<TimerScreen> {
                   child: TextField(
                     controller: _hoursController,
                     keyboardType: TextInputType.number,
-                    decoration: InputDecoration(labelText: 'Hours'),
+                    decoration: InputDecoration(
+                      labelText: 'Hours',
+                      labelStyle: TextStyle(
+                        color: widget.isDarkMode ? Colors.white : Colors.black,
+                      ),
+                    ),
                   ),
                 ),
                 SizedBox(width: 10),
@@ -400,17 +416,27 @@ class _TimerScreenState extends State<TimerScreen> {
                   child: TextField(
                     controller: _minutesController,
                     keyboardType: TextInputType.number,
-                    decoration: InputDecoration(labelText: 'Minutes'),
+                    decoration: InputDecoration(
+                      labelText: 'Minutes',
+                      labelStyle: TextStyle(
+                        color: widget.isDarkMode ? Colors.white : Colors.black,
+                      ),
+                    ),
                   ),
                 ),
                 SizedBox(width: 10),
                 // إدخال الثواني
                 SizedBox(
-                  width: 60,
+                  width: 70,
                   child: TextField(
                     controller: _secondsController,
                     keyboardType: TextInputType.number,
-                    decoration: InputDecoration(labelText: 'Seconds'),
+                    decoration: InputDecoration(
+                      labelText: 'Seconds',
+                      labelStyle: TextStyle(
+                        color: widget.isDarkMode ? Colors.white : Colors.black,
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -431,6 +457,10 @@ class _TimerScreenState extends State<TimerScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor:
+                        widget.isDarkMode ? Colors.white : Colors.black,
+                  ),
                   onPressed: startTimer,
                   child: Text(
                     'Start',
@@ -442,6 +472,10 @@ class _TimerScreenState extends State<TimerScreen> {
                 ),
                 SizedBox(width: 10),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor:
+                        widget.isDarkMode ? Colors.white : Colors.black,
+                  ),
                   onPressed: stopTimer,
                   child: Text(
                     'Stop',
@@ -453,6 +487,10 @@ class _TimerScreenState extends State<TimerScreen> {
                 ),
                 SizedBox(width: 10),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor:
+                        widget.isDarkMode ? Colors.white : Colors.black,
+                  ),
                   onPressed: resetTimer,
                   child: Text(
                     'Reset',

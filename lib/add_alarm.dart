@@ -1,570 +1,200 @@
-// // import 'dart:math';
-
-// // import 'package:alarm_app/utils/alarm_provider.dart';
-// // import 'package:alarm_app/widgets/show_snack_bar.dart';
-// // import 'package:flutter/cupertino.dart';
-// // import 'package:flutter/material.dart';
-// // import 'package:provider/provider.dart';
-// // import 'package:intl/intl.dart';
-
-// // class AddAlarm extends StatefulWidget {
-// //   const AddAlarm({super.key});
-
-// //   @override
-// //   State<AddAlarm> createState() => _AddAlaramState();
-// // }
-
-// // class _AddAlaramState extends State<AddAlarm> {
-// //   late TextEditingController controller;
-
-// //   String? alarmDate;
-// //   String? dateTime;
-// //   bool repeat = false;
-
-// //   DateTime? notificationtime;
-
-// //   String? name = "none";
-// //   int? Milliseconds;
-
-// //   @override
-// //   void initState() {
-// //     controller = TextEditingController();
-// //     context.read<AlarmProvider>().getData();
-// //     super.initState();
-// //   }
-
-// //   @override
-// //   Widget build(BuildContext context) {
-// //     return Scaffold(
-// //       backgroundColor: Colors.white,
-// //       appBar: AppBar(
-// //         iconTheme: const IconThemeData(size: 25),
-// //         backgroundColor: Colors.white,
-// //         actions: [
-// //           Padding(
-// //             padding: const EdgeInsets.all(8.0),
-// //             child: IconButton(
-// //               onPressed: () {
-// //                 Random random = new Random();
-// //                 int randomNumber = random.nextInt(100);
-
-// //                 context.read<AlarmProvider>().setAlarm(
-// //                     controller.text,
-// //                     alarmDate!,
-// //                     dateTime!,
-// //                     true,
-// //                     name!,
-// //                     randomNumber,
-// //                     Milliseconds!);
-// //                 context.read<AlarmProvider>().setData();
-
-// //                 context
-// //                     .read<AlarmProvider>()
-// //                     .scheduleNotification(notificationtime!, randomNumber);
-
-// //                 Navigator.pop(context);
-
-// //                 customShowSnackBar(
-// //                   content: 'Alarm Added',
-// //                   context: context,
-// //                 );
-// //               },
-// //               icon: const Icon(
-// //                 Icons.check,
-// //                 size: 30,
-// //               ),
-// //             ),
-// //           )
-// //         ],
-// //         automaticallyImplyLeading: true,
-// //         title: const Text(
-// //           'Add Alarm',
-// //           style: TextStyle(
-// //             fontWeight: FontWeight.bold,
-// //             fontSize: 25,
-// //           ),
-// //         ),
-// //         centerTitle: true,
-// //       ),
-// //       body: SingleChildScrollView(
-// //         child: Column(
-// //           mainAxisAlignment: MainAxisAlignment.center,
-// //           crossAxisAlignment: CrossAxisAlignment.center,
-// //           children: [
-// //             Container(
-// //               height: MediaQuery.of(context).size.height * 0.5,
-// //               width: MediaQuery.of(context).size.width,
-// //               child: Center(
-// //                   child: CupertinoDatePicker(
-// //                 showDayOfWeek: true,
-// //                 minimumDate: DateTime.now(),
-// //                 dateOrder: DatePickerDateOrder.dmy,
-// //                 onDateTimeChanged: (va) {
-// //                   alarmDate = DateFormat().add_jms().format(va);
-// //                   dateTime =
-// //                       DateFormat('yyyy-MM-dd').format(va); // Format the date
-// //                   Milliseconds = va.microsecondsSinceEpoch;
-
-// //                   notificationtime = va;
-
-// //                   print(dateTime);
-// //                 },
-// //               )),
-// //             ),
-// //             Padding(
-// //               padding: const EdgeInsets.all(8.0),
-// //               child: Container(
-// //                 height: MediaQuery.of(context).size.width * 0.13,
-// //                 width: MediaQuery.of(context).size.width,
-// //                 child: Padding(
-// //                   padding: const EdgeInsets.symmetric(horizontal: 10),
-// //                   child: CupertinoTextField(
-// //                     decoration: BoxDecoration(
-// //                       color: Colors.grey.shade400,
-// //                     ),
-// //                     placeholder: "Add Label",
-// //                     controller: controller,
-// //                     cursorColor: Colors.white,
-// //                   ),
-// //                 ),
-// //               ),
-// //             ),
-// //             const SizedBox(height: 20),
-// //             Padding(
-// //               padding: const EdgeInsets.symmetric(horizontal: 10),
-// //               child: Row(
-// //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-// //                 children: [
-// //                   const Padding(
-// //                     padding: EdgeInsets.all(8.0),
-// //                     child: Text(
-// //                       " Repeat daily",
-// //                       style: TextStyle(
-// //                         fontSize: 22,
-// //                         fontWeight: FontWeight.bold,
-// //                       ),
-// //                     ),
-// //                   ),
-// //                   CupertinoSwitch(
-// //                     value: repeat,
-// //                     onChanged: (bool value) {
-// //                       repeat = value;
-
-// //                       if (repeat == false) {
-// //                         name = "none";
-// //                       } else {
-// //                         name = "Everyday";
-// //                       }
-
-// //                       setState(() {});
-// //                     },
-// //                   ),
-// //                 ],
-// //               ),
-// //             ),
-// //             const SizedBox(height: 40),
-// //             MaterialButton(
-// //               color: Colors.black,
-// //               onPressed: () {
-// //                 Random random = new Random();
-// //                 int randomNumber = random.nextInt(100);
-
-// //                 context.read<AlarmProvider>().setAlarm(
-// //                     controller.text,
-// //                     alarmDate ?? '',
-// //                     dateTime ?? '',
-// //                     true,
-// //                     name!,
-// //                     randomNumber,
-// //                     Milliseconds!);
-// //                 context.read<AlarmProvider>().setData();
-
-// //                 context
-// //                     .read<AlarmProvider>()
-// //                     .scheduleNotification(notificationtime!, randomNumber);
-
-// //                 Navigator.pop(context);
-// //                 customShowSnackBar(
-// //                   content: 'Alarm Added',
-// //                   context: context,
-// //                 );
-// //               },
-// //               child: const Padding(
-// //                 padding: EdgeInsets.all(8.0),
-// //                 child: Text(
-// //                   "Set Alarm",
-// //                   style: TextStyle(
-// //                     fontSize: 22,
-// //                     fontWeight: FontWeight.bold,
-// //                     color: Colors.white,
-// //                   ),
-// //                 ),
-// //               ),
-// //             ),
-// //             const SizedBox(height: 20)
-// //           ],
-// //         ),
-// //       ),
-// //     );
-// //   }
-// // }
-
-// import 'dart:math';
-
-// import 'package:alarm_app/utils/alarm_provider.dart';
-// import 'package:alarm_app/widgets/show_snack_bar.dart';
-// import 'package:flutter/cupertino.dart';
-// import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
-// import 'package:intl/intl.dart';
-
-// class AddAlarm extends StatefulWidget {
-//   const AddAlarm({super.key});
-
-//   @override
-//   State<AddAlarm> createState() => _AddAlarmState();
-// }
-
-// class _AddAlarmState extends State<AddAlarm> {
-//   late TextEditingController controller;
-//   String? alarmDate;
-//   String? dateTime;
-//   bool repeat = false;
-//   DateTime? notificationTime;
-//   String? name = "none";
-//   int? milliseconds;
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     controller = TextEditingController();
-//     context.read<AlarmProvider>().getData();
-//   }
-
-//   void setAlarm() {
-//     Random random = Random();
-//     int randomNumber = random.nextInt(100);
-
-//     context.read<AlarmProvider>().setAlarm(
-//       controller.text,
-//       alarmDate ?? '',
-//       dateTime ?? '',
-//       true,
-//       name!,
-//       randomNumber,
-//       milliseconds!,
-//     );
-
-//     context.read<AlarmProvider>().setData();
-//     context.read<AlarmProvider>().scheduleNotification(notificationTime!, randomNumber);
-
-//     Navigator.pop(context);
-//     customShowSnackBar(content: 'Alarm Added', context: context);
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: Colors.white,
-//       appBar: AppBar(
-//         iconTheme: const IconThemeData(size: 25),
-//         backgroundColor: Colors.white,
-//         title: const Text(
-//           'Add Alarm',
-//           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-//         ),
-//         centerTitle: true,
-//         actions: [
-//           IconButton(
-//             onPressed: setAlarm,
-//             icon: const Icon(Icons.check, size: 30),
-//           ),
-//         ],
-//       ),
-//       body: SingleChildScrollView(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           crossAxisAlignment: CrossAxisAlignment.center,
-//           children: [
-//             Container(
-//               height: MediaQuery.of(context).size.height * 0.5,
-//               width: MediaQuery.of(context).size.width,
-//               child: Center(
-//                 child: CupertinoDatePicker(
-//                   showDayOfWeek: true,
-//                   minimumDate: DateTime.now(),
-//                   dateOrder: DatePickerDateOrder.dmy,
-//                   onDateTimeChanged: (va) {
-//                     alarmDate = DateFormat().add_jms().format(va);
-//                     dateTime = DateFormat('yyyy-MM-dd').format(va);
-//                     milliseconds = va.millisecondsSinceEpoch; // Use milliseconds since epoch
-
-//                     notificationTime = va; // Save the notification time
-//                   },
-//                 ),
-//               ),
-//             ),
-//             Padding(
-//               padding: const EdgeInsets.all(8.0),
-//               child: Container(
-//                 height: MediaQuery.of(context).size.width * 0.13,
-//                 width: MediaQuery.of(context).size.width,
-//                 child: Padding(
-//                   padding: const EdgeInsets.symmetric(horizontal: 10),
-//                   child: CupertinoTextField(
-//                     decoration: BoxDecoration(
-//                       color: Colors.grey.shade400,
-//                     ),
-//                     placeholder: "Add Label",
-//                     controller: controller,
-//                     cursorColor: Colors.white,
-//                   ),
-//                 ),
-//               ),
-//             ),
-//             const SizedBox(height: 20),
-//             Padding(
-//               padding: const EdgeInsets.symmetric(horizontal: 10),
-//               child: Row(
-//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                 children: [
-//                   const Padding(
-//                     padding: EdgeInsets.all(8.0),
-//                     child: Text(
-//                       " Repeat daily",
-//                       style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-//                     ),
-//                   ),
-//                   CupertinoSwitch(
-//                     value: repeat,
-//                     onChanged: (bool value) {
-//                       setState(() {
-//                         repeat = value;
-//                         name = repeat ? "Everyday" : "none";
-//                       });
-//                     },
-//                   ),
-//                 ],
-//               ),
-//             ),
-//             const SizedBox(height: 40),
-//             MaterialButton(
-//               color: Colors.black,
-//               onPressed: setAlarm,
-//               child: const Padding(
-//                 padding: EdgeInsets.all(8.0),
-//                 child: Text(
-//                   "Set Alarm",
-//                   style: TextStyle(
-//                     fontSize: 22,
-//                     fontWeight: FontWeight.bold,
-//                     color: Colors.white,
-//                   ),
-//                 ),
-//               ),
-//             ),
-//             const SizedBox(height: 20),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-import 'dart:math';
 import 'package:alarm_app/utils/alarm_provider.dart';
 import 'package:alarm_app/widgets/show_snack_bar.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
 
 class AddAlarm extends StatefulWidget {
-  const AddAlarm({super.key});
-
   @override
-  State<AddAlarm> createState() => _AddAlarmState();
+  _AddAlarmState createState() => _AddAlarmState();
 }
 
 class _AddAlarmState extends State<AddAlarm> {
-  late TextEditingController controller;
-  String? alarmDate;
-  String? dateTime;
-  bool repeat = false;
-  DateTime? notificationTime;
-  String? name = "none";
-  int? milliseconds;
+  String? label;
+  DateTime? selectedDateTime;
+  bool isDailyRepeat = false;
+
+  String selectedRingtone = 'Default';
+
+  List<String> ringtones = [
+    'Default',
+    'Tone 1',
+    'Tone 2',
+    'Tone 3',
+    'Tone 4',
+  ];
 
   @override
   void initState() {
     super.initState();
-    controller = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
+    selectedDateTime = DateTime.now();
   }
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.black,
       appBar: AppBar(
-        iconTheme: const IconThemeData(size: 25),
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
+        iconTheme: const IconThemeData(size: 25, color: Colors.white),
+        centerTitle: true,
+        title: const Text(
+          'New Alarm',
+          style: TextStyle(
+            fontSize: 25,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         actions: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.only(right: 6),
             child: IconButton(
               onPressed: () {
-                if (alarmDate != null && dateTime != null) {
-                  Random random = Random();
-                  int randomNumber = random.nextInt(100);
+                // عند إضافة إنذار جديد
+                final alarm = Alarm(
+                  label: label,
+                  dateTime: selectedDateTime.toString(),
+                  // أضف الخصائص الأخرى اللازمة هنا
+                );
 
-                  context.read<AlarmProvider>().setAlarm(
-                        controller.text,
-                        dateTime!,
-                        alarmDate!,
-                        true,
-                        repeat ? name! : "none",
-                        randomNumber,
-                        milliseconds!,
-                      );
-
-                  Navigator.pop(context);
+                if (label == null) {
                   customShowSnackBar(
-                    content: 'Alarm Added',
                     context: context,
+                    content: 'Label is required',
+                    backgroundColor: Colors.red,
                   );
-                } else {
+                }
+
+                if (label != null && selectedDateTime != null) {
+                  Provider.of<AlarmProvider>(context, listen: false)
+                      .addAlarm(label!, selectedDateTime!);
+                  Navigator.of(context).pop(alarm);
+
+                  Duration remainingTime =
+                      selectedDateTime!.difference(DateTime.now());
+                  int hoursRemaining = remainingTime.inHours;
+                  int minutesRemaining = remainingTime.inMinutes % 60;
+
                   customShowSnackBar(
-                    content: 'Please select a date and time.',
                     context: context,
+                    content:
+                        'Alarm set for ${hoursRemaining}h ${minutesRemaining}m from now.',
+                    backgroundColor: Colors.blue,
                   );
                 }
               },
-              icon: const Icon(Icons.check, size: 30),
+              icon: const Icon(
+                Icons.check,
+                size: 30,
+              ),
             ),
           )
         ],
-        title: const Text(
-          'Add Alarm',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-        ),
-        centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              height: MediaQuery.of(context).size.height * 0.5,
-              width: MediaQuery.of(context).size.width,
-              child: Center(
-                child: CupertinoDatePicker(
-                  showDayOfWeek: true,
-                  minimumDate: DateTime.now(),
-                  dateOrder: DatePickerDateOrder.dmy,
-                  onDateTimeChanged: (va) {
-                    alarmDate = DateFormat().add_jms().format(va);
-                    dateTime = DateFormat('yyyy-MM-dd').format(va);
-                    milliseconds = va.millisecondsSinceEpoch;
-                    notificationTime = va;
-                  },
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                height: MediaQuery.of(context).size.width * 0.13,
-                width: MediaQuery.of(context).size.width,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: CupertinoTextField(
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade400,
-                    ),
-                    placeholder: "Add Label",
-                    controller: controller,
-                    cursorColor: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      " Repeat daily",
-                      style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                height: screenHeight * 0.4,
+                child: CupertinoTheme(
+                  data: const CupertinoThemeData(
+                    textTheme: CupertinoTextThemeData(
+                      dateTimePickerTextStyle: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20, // Set text color to white
+                      ),
                     ),
                   ),
-                  CupertinoSwitch(
-                    value: repeat,
-                    onChanged: (bool value) {
+                  child: CupertinoDatePicker(
+                    minimumDate: DateTime.now(),
+                    mode: CupertinoDatePickerMode.dateAndTime,
+                    showDayOfWeek: true,
+                    dateOrder: DatePickerDateOrder.dmy,
+                    onDateTimeChanged: (DateTime newDateTime) {
                       setState(() {
-                        repeat = value;
-                        name = repeat ? "Everyday" : "none";
+                        selectedDateTime = newDateTime;
                       });
                     },
                   ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 40),
-            MaterialButton(
-              color: Colors.black,
-              onPressed: () {
-                if (alarmDate != null && dateTime != null) {
-                  Random random = Random();
-                  int randomNumber = random.nextInt(100);
-
-                  context.read<AlarmProvider>().setAlarm(
-                        controller.text,
-                        dateTime!,
-                        alarmDate!,
-                        true,
-                        repeat ? name! : "none",
-                        randomNumber,
-                        milliseconds!,
-                      );
-
-                  Navigator.pop(context);
-                  customShowSnackBar(
-                    content: 'Alarm Added',
-                    context: context,
-                  );
-                } else {
-                  customShowSnackBar(
-                    content: 'Please select a date and time.',
-                    context: context,
-                  );
-                }
-              },
-              child: const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text(
-                  "Set Alarm",
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 20),
-          ],
+              const SizedBox(height: 16),
+              TextField(
+                cursorColor: Colors.black,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.grey.shade300,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  enabledBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.black,
+                    ),
+                  ),
+                  focusedBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+                onChanged: (value) {
+                  label = value;
+                },
+              ),
+
+              const SizedBox(height: 20),
+              // Widget لاختيار النغمة
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      width: screenWidth * 0.4,
+                      //color: Colors.red,
+                      child: const Text(
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        'Select Ringtone:',
+                        style: TextStyle(
+                          fontSize: 22,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    DropdownButton<String>(
+                      value: selectedRingtone,
+                      dropdownColor: Colors.black,
+                      iconEnabledColor: Colors.white,
+                      items: ringtones.map((String ringtone) {
+                        return DropdownMenuItem<String>(
+                          value: ringtone,
+                          child: Text(
+                            ringtone,
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (String? newRingtone) {
+                        setState(() {
+                          selectedRingtone = newRingtone!;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
